@@ -1,65 +1,79 @@
 function gameBoard() {
-    const board = [
-      ["", "", ""],
-      ["", "", ""],
-      ["", "", ""]
-    ]
-  
+    const board = ["", "", "","", "", "", "", "", ""]
+
     const getBoard = () => board;
   
-    const makeMove = (r, p, mark) => {
-      if (board[r][p] === "") {
-      board[r][p] = mark
+    const changeBoard = (index, mark) => {
+      if (board[index] === "") {
+      board[index] = mark
       return true
       }
     }
   
     const check = () => {
-    for (let row = 0; row < 3; row++) {
-      if ((board[row][0] === "X" && board[row][1] === "X" && board[row][2] === "X") || (board[row][0] === "Y" && board[row][1] === "Y" && board[row][2] === "Y")) {
+    if ((board[0] === "X" && board[1] === "X" && board[2] === "X") || (board[0] === "Y" && board[1] === "Y" && board[2] === "Y")) {
         return true
       }
-    }
-      //check col
-    for (let col = 0; col < 3; col++) {
-      if ((board[col][0] === "X" && board[col][1] === "X" && board[col][2] === "X") || (board[col][0] === "Y" && board[col][1] === "Y" && board[col][2] === "Y")) {
+    if ((board[3] === "X" && board[4] === "X" && board[5] === "X") || (board[3] === "Y" && board[4] === "Y" && board[5] === "Y")) {
         return true
       }
-    }
-    //check diag
-    if ((board[0][0] === "X" && board[1][1] === "X" && board[2][2] === "X") || (board[0][0] === "Y" && board[1][1] === "Y" && board[2][2] === "Y")) {
-      return true
-    }
-    //check diag
-    if ((board[0][2] === "X" && board[1][1] === "X" && board[2][0] === "X") || (board[0][2] === "Y" && board[1][1] === "Y" && board[2][0] === "Y")) {
-      return true
-    }
+    if ((board[6] === "X" && board[7] === "X" && board[8] === "X") || (board[6] === "Y" && board[7] === "Y" && board[8] === "Y")) {
+        return true
+      }  
+    if ((board[0] === "X" && board[3] === "X" && board[6] === "X") || (board[0] === "Y" && board[3] === "Y" && board[6] === "Y")) {
+        return true
+      }  
     }
   
-    return {getBoard, makeMove, check}
+    return {getBoard, changeBoard, check}
   }
-  
+
+  function domControl(gameBoard) {
+    const elem = document.querySelectorAll(".in");
+    const board = gameBoard.getBoard();
+
+    elem.forEach((el, ind) => {
+        el.addEventListener("click", () => {
+            gameFlow.play(ind); 
+        })
+    })
+    
+    const render = () => {
+       elem.forEach((el, ind) => {
+        el.textContent = board[ind];
+    })}   
+
+    return {render}
+  }
+
   function gameFlow() {
-    const {getBoard, makeMove, check} = gameBoard();
+    const {getBoard, changeBoard, check} = gameBoard();
+    const {render} = domControl(gameBoard);
     let turn = "X";
     let victor = ""
+    let X = 0;
+    let O = 0;
   
-    const play = (r,p) => {
-      if (makeMove(r,p,turn)) {
+    const play = (p) => {
+      if (changeBoard(p,turn)) {
         turn = turn === "X" ? "O" : "X";
       };
-      console.log(getBoard());
+      render();
       victor = check();
-      if (victor) {console.log(`${turn} wins`)}
+      if (victor) {
+        alert(`${turn} wins`);
+        
+    }
     }
     
   
     return {play}
   }
-  //check if position is empty, check if draw...
+
+
   
   
   const game = gameFlow()
-  console.log(game.play(0,0));
+  
   
   
