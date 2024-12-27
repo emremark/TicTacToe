@@ -2,11 +2,54 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: none;
+}
+
+.dugme {
+    font-size: 3em;
+    background-color: white;
+    border: 1px solid black;
+}
+
 .gboard {
     display: grid;
     height: 500px;
     width: 500px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    border: 1px solid black;
-    }
+    border: none;
+}
+
+.gboard button:first-child {
+    border-left: none;
+    border-top: none;
+}
+.gboard button:nth-child(2) {
+    border-top: none;
+}
+.gboard button:nth-child(3) {
+    border-top: none;
+    border-right: none;
+}
+.gboard button:nth-child(4) {
+    border-left: none;
+}
+.gboard button:nth-child(6) {
+    border-right: none;
+}
+.gboard button:nth-child(7) {
+    border-left: none;
+    border-bottom: none;
+}
+.gboard button:nth-child(8) {
+    border-bottom: none;
+}
+.gboard button:nth-child(9) {
+    border-right: none;
+    border-bottom: none;
+}

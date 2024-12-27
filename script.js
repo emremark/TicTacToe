@@ -9,7 +9,22 @@ const gameB = (function () {
     }
   }
 
-  return {getBoard, move}
+  const checkWin = (board, turn) => {
+    winComb = [
+      [0, 1, 2],
+      [3, 4, 5], 
+      [6, 7, 8], 
+      [0, 3, 6], 
+      [1, 4, 7], 
+      [2, 5, 8], 
+      [0, 4, 8], 
+      [2, 4, 6]
+    ]
+
+    return winComb.some(combo => combo.every(index => board[index] === turn));
+  }
+
+  return {getBoard, move, checkWin}
 
 })();
 
@@ -45,11 +60,10 @@ function screenControler(gameB,gameC) {
     next.textContent = `${trn.name}'s turn`
 
     brd.forEach((el, ind) => {
-          console.log(gameB.getBoard());
           const btn = document.createElement("button");
           btn.dataset.p = ind;
-          btn.innerHTML = el;
-          console.log(gameB.getBoard());
+          btn.classList = "dugme";
+          btn.textContent = el;
           bdiv.appendChild(btn);
       })
   }
@@ -57,8 +71,15 @@ function screenControler(gameB,gameC) {
   function whenClick(e) {
     const p = e.target.dataset.p;
     gameB.move(p, gameC.getTurn());
-    gameC.switchTurn();
-    updateScreen();
+    if (gameB.checkWin(gameB.getBoard(), gameC.getTurn().name)) {
+      updateScreen();
+      alert(`${gameC.getTurn().name} wins!`);
+      return
+    }
+    else {
+      gameC.switchTurn();
+      updateScreen();
+    }
   }
   bdiv.addEventListener("click", whenClick);
 
