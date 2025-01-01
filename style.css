@@ -30,6 +30,16 @@ body {
     margin-bottom: 80px;
 }
 
+.score {
+    font-size: 2em;
+}
+
+.lower {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
 .gboard button:first-child {
     border-left: none;
     border-top: none;

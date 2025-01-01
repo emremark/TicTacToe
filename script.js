@@ -23,8 +23,21 @@ const gameB = (function () {
 
     return winComb.some(combo => combo.every(index => board[index] === turn));
   }
+  
+  const checkDraw = (board) => {
+    for (let n of board) {
+      if (n === "") {
+        return false
+      }
+    }
+    return true
+  }
+   
+  const resetBoard = () => {
+    board = ["", "", "", "", "", "", "", "", ""];
+  }
 
-  return {getBoard, move, checkWin}
+  return {getBoard, move, checkWin, checkDraw, resetBoard}
 
 })();
 
@@ -49,12 +62,17 @@ const gameC = (function () {
   }
   const getTurn = () => turn;
 
-  return {addpoint, getScoreX, getScoreO, switchTurn, getTurn}
+  const resetTurn = () => {
+    turn = players[0]
+  }
+
+  return {addpoint, getScoreX, getScoreO, switchTurn, getTurn, resetTurn}
 })();
 
 function screenControler(gameB,gameC) {
   const bdiv = document.querySelector(".gboard");
   const next = document.querySelector(".turn")
+  const strt = document.querySelector("#reset")
   let xp = document.querySelector("#xnu");
   let op = document.querySelector("#onu");
 
@@ -82,11 +100,13 @@ function screenControler(gameB,gameC) {
   function whenClick(e) {
     const p = e.target.dataset.p;
     gameB.move(p, gameC.getTurn());
+    if (gameB.checkDraw(gameB.getBoard())) {
+      alert("Draw!")
+      return
+    }
     if (gameB.checkWin(gameB.getBoard(), gameC.getTurn().name)) {
       updateScreen();
-      debugger
       gameC.addpoint();
-      debugger
       updateScore();
       alert(`${gameC.getTurn().name} wins!`);
       return
@@ -97,7 +117,11 @@ function screenControler(gameB,gameC) {
     }
   }
   bdiv.addEventListener("click", whenClick);
-
+  strt.addEventListener("click", () => {
+    gameB.resetBoard();
+    gameC.resetTurn();
+    updateScreen();
+  });
   updateScreen();
 }
 
